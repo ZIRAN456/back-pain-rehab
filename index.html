@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>腰痛运动疗法临床交互指南 · 生物力学工程版</title>
 <style>
   :root {
@@ -282,34 +285,34 @@
       <div class="card-header">
         <h2 id="exName">死虫式 Dead Bug</h2>
         <div class="card-tags">
-          <span class="pill pill-green" id="exGroupTag">节段微失稳型</span>
-          <span class="pill pill-blue" id="exTypeTag">核心抗伸展 · 对侧交互</span>
+          <span class="pill pill-green" id="exGroupTag">起身脱力怕闪腰型</span>
+          <span class="pill pill-blue" id="exTypeTag">深层安全带 · 对侧悬空吃劲</span>
         </div>
       </div>
 
       <div class="info-block contra-block">
-        <div class="info-title">对侧力学基准（严格对齐）</div>
+        <div class="info-title">动作标准（手脚悬空绝不着地）</div>
         <div class="info-body" id="exContra">
-          【近侧臂向后延展】+【远侧下肢向前蹬出】必须全程悬空离地 5 至 10cm（绝不触地卸力！）；【远侧臂】与【近侧下肢】严格垂直 90° 桌面位锁定在空中！
+          【近侧臂向后延展】+【远侧下肢向前蹬出】必须全程悬空离地 5 至 10cm（绝不触地卸力！）；【远侧臂】与【近侧下肢】在空中垂直90度锁死不晃！
         </div>
       </div>
 
       <div class="info-block">
-        <div class="info-title">适用人群与临床目标</div>
+        <div class="info-title">哪些人最适合练这个</div>
         <div class="info-body" id="exTarget">
           早晨刷牙洗脸微弯腰突然脱力怕闪腰、久坐起身直不起腰需双手扶桌扶膝盖、平时总觉后腰深处空落落软绵绵没有承托劲的人群。
         </div>
       </div>
 
       <div class="info-block">
-        <div class="info-title">动作要领与生物力学指令</div>
+        <div class="info-title">动作关键口诀与要领</div>
         <div class="info-body" id="exCues">
           躺平后双臂垂直朝天、双腿屈膝90度悬空在空中；后背下半截死死贴在床上绝不能翘起；对侧手脚缓慢向前后两端伸出，离地5至10厘米悬停绷紧，绝不触地卸力！
         </div>
       </div>
 
       <div class="info-block warning-block">
-        <div class="info-title">绝对禁忌与代偿红线</div>
+        <div class="info-title">哪些情况千万别做 / 常见做错</div>
         <div class="info-body" id="exWarning">
           手脚往外伸的时候，如果后腰离开床板往前拱起翘起来，说明肚子没吃上劲、后腰在替它受罪，必须立刻把手脚伸展的距离缩小，只要后腰能死死压在床上就行！
         </div>
@@ -832,9 +835,11 @@ function animate(timestamp) {
   const eased = easeInOut(p);
 
   renderFrame(eased);
-  requestAnimationFrame(animate);
+  selectEx('deadbug');
+requestAnimationFrame(animate);
 }
 
+selectEx('deadbug');
 requestAnimationFrame(animate);
 </script>
 </body>
