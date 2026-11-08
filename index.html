@@ -222,6 +222,105 @@
     .group-box { padding: 12px; }
     .workspace { grid-template-columns: 1fr; gap: 14px; padding: 12px; border-radius: 12px; }
   }
+
+  /* 移动端与桌面通用快捷动作切换条 */
+  .quick-switcher-bar {
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .quick-switcher-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .quick-switcher-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary-green);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .quick-switcher-hint {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .quick-switcher-btns {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    width: 100%;
+  }
+  .quick-btn {
+    padding: 9px 4px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border-color);
+    background: #ffffff;
+    color: var(--text-primary);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s ease-in-out;
+  }
+  .quick-btn:active {
+    transform: scale(0.96);
+  }
+  .quick-btn.active {
+    background: var(--primary-green);
+    color: #ffffff;
+    border-color: var(--primary-green);
+    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.25);
+  }
+
+  /* 增强所有可点击元素的触控响应 */
+  .ex-btn, .ctrl-btn, .quick-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .ex-btn:active, .ctrl-btn:active {
+    transform: scale(0.96);
+  }
+
+  /* 顶部适应症卡片点击优化 */
+  .group-box {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  @media (max-width: 960px) {
+    .quick-switcher-btns {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .quick-btn {
+      padding: 10px 2px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .ctrl-bar-row2 {
+      display: grid !important;
+      grid-template-columns: 1fr 1.2fr 1fr;
+      gap: 6px !important;
+    }
+    .ctrl-bar-subrow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 6px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -238,8 +337,8 @@
       <div class="group-title">分组一：弯腰/久坐就疼型（椎间盘怕前屈）</div>
       <div class="group-desc">久坐、弯腰系鞋带或搬东西瞬间刺痛，但躺平或双手叉腰往后仰身腰痛立马减轻。</div>
       <div class="btn-row">
-        <button class="ex-btn" id="btn_prone" onclick="selectEx('prone')">俯卧伸展</button>
-        <button class="ex-btn" id="btn_standing" onclick="selectEx('standing')">站立位后伸</button>
+        <button class="ex-btn" id="btn_prone" onclick="selectEx('prone', true)">俯卧伸展</button>
+        <button class="ex-btn" id="btn_standing" onclick="selectEx('standing', true)">站立位后伸</button>
       </div>
     </div>
 
@@ -247,8 +346,8 @@
       <div class="group-title">分组二：起身脱力/怕闪腰型（深层肌肉没劲）</div>
       <div class="group-desc">早晨刷牙微弯腰突然脱力像要闪腰；久坐起身瞬间直不起腰，必须双手撑膝盖才能站直。</div>
       <div class="btn-row">
-        <button class="ex-btn active" id="btn_deadbug" onclick="selectEx('deadbug')">死虫式</button>
-        <button class="ex-btn" id="btn_birddog" onclick="selectEx('birddog')">鸟狗式</button>
+        <button class="ex-btn active" id="btn_deadbug" onclick="selectEx('deadbug', true)">死虫式</button>
+        <button class="ex-btn" id="btn_birddog" onclick="selectEx('birddog', true)">鸟狗式</button>
       </div>
     </div>
 
@@ -256,8 +355,8 @@
       <div class="group-title">分组三：久站腰酸/假翘臀型（屁股没劲累后腰）</div>
       <div class="group-desc">排队逛街站超15分钟后腰酸紧想捶腰；走路左右晃腰；肚子前凸后腰死命凹（假翘臀）。</div>
       <div class="btn-row">
-        <button class="ex-btn" id="btn_bridge" onclick="selectEx('bridge')">臀桥</button>
-        <button class="ex-btn" id="btn_clamshell" onclick="selectEx('clamshell')">蚌式开合</button>
+        <button class="ex-btn" id="btn_bridge" onclick="selectEx('bridge', true)">臀桥</button>
+        <button class="ex-btn" id="btn_clamshell" onclick="selectEx('clamshell', true)">蚌式开合</button>
       </div>
     </div>
   </div>
@@ -265,6 +364,22 @@
   <!-- 核心交互区 -->
   <div class="workspace">
     <div>
+      <!-- 画布专属快捷动作切换条 (置顶紧贴画布，触手可及) -->
+      <div class="quick-switcher-bar">
+        <div class="quick-switcher-header">
+          <div class="quick-switcher-title">🎯 当前动作切换（点击直接换动作）：</div>
+          <div class="quick-switcher-hint">支持左右按键连续轮播</div>
+        </div>
+        <div class="quick-switcher-btns">
+          <button type="button" class="quick-btn" id="quick_prone" onclick="selectEx('prone', false)" data-ex="prone">俯卧伸展</button>
+          <button type="button" class="quick-btn" id="quick_standing" onclick="selectEx('standing', false)" data-ex="standing">站立后伸</button>
+          <button type="button" class="quick-btn active" id="quick_deadbug" onclick="selectEx('deadbug', false)" data-ex="deadbug">死虫式</button>
+          <button type="button" class="quick-btn" id="quick_birddog" onclick="selectEx('birddog', false)" data-ex="birddog">鸟狗式</button>
+          <button type="button" class="quick-btn" id="quick_bridge" onclick="selectEx('bridge', false)" data-ex="bridge">臀桥</button>
+          <button type="button" class="quick-btn" id="quick_clamshell" onclick="selectEx('clamshell', false)" data-ex="clamshell">蚌式开合</button>
+        </div>
+      </div>
+
       <div class="canvas-wrapper">
         <canvas id="motionCanvas" width="800" height="450"></canvas>
       </div>
@@ -273,9 +388,13 @@
           <input type="range" class="slider" id="progressSlider" min="0" max="1" step="0.01" value="0" oninput="manualSeek(this.value)" style="width:100%;">
         </div>
         <div class="ctrl-bar-row2" style="width:100%; display:flex; gap:8px;">
-          <button class="ctrl-btn" id="playBtn" onclick="togglePlay()" style="flex:1;">⏸ 暂停</button>
-          <button class="ctrl-btn" id="speedBtn" onclick="toggleSpeed()" style="flex:1;">调速: 1.0x</button>
-          <button class="ctrl-btn active" id="glowBtn" onclick="toggleGlow()" style="flex:1.2;">🔥 肌群高亮: 开</button>
+          <button type="button" class="ctrl-btn" onclick="prevEx()" style="flex:1;">⏮ 上一动作</button>
+          <button type="button" class="ctrl-btn" id="playBtn" onclick="togglePlay()" style="flex:1.2; font-weight:700;">⏸ 暂停</button>
+          <button type="button" class="ctrl-btn" onclick="nextEx()" style="flex:1;">下一动作 ⏭</button>
+        </div>
+        <div class="ctrl-bar-subrow" style="width:100%; display:flex; gap:8px; margin-top:6px;">
+          <button type="button" class="ctrl-btn" id="speedBtn" onclick="toggleSpeed()" style="flex:1;">调速: 1.0x</button>
+          <button type="button" class="ctrl-btn active" id="glowBtn" onclick="toggleGlow()" style="flex:1.2;">🔥 肌群高亮: 开</button>
         </div>
       </div>
     </div>
@@ -322,6 +441,25 @@
 </div>
 
 <script>
+// CanvasRenderingContext2D.prototype.roundRect Polyfill (WeChat / Older Mobile WebViews)
+if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, radii) {
+    if (!Array.isArray(radii)) radii = [radii || 0];
+    const r = Math.min(radii[0] || 0, w / 2, h / 2);
+    this.beginPath();
+    this.moveTo(x + r, y);
+    this.lineTo(x + w - r, y);
+    this.quadraticCurveTo(x + w, y, x + w, y + r);
+    this.lineTo(x + w, y + h - r);
+    this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    this.lineTo(x + r, y + h);
+    this.quadraticCurveTo(x, y + h, x, y + h - r);
+    this.lineTo(x, y + r);
+    this.quadraticCurveTo(x, y, x + r, y);
+    this.closePath();
+    return this;
+  };
+}
 const canvas = document.getElementById('motionCanvas');
 const ctx = canvas.getContext('2d');
 const W = 800, H = 450;
@@ -384,22 +522,58 @@ const DB = {
   }
 };
 
-function selectEx(key) {
+const EX_ORDER = ['prone', 'standing', 'deadbug', 'birddog', 'bridge', 'clamshell'];
+
+function prevEx() {
+  const cur = currentEx || 'deadbug';
+  let idx = EX_ORDER.indexOf(cur);
+  idx = (idx - 1 + EX_ORDER.length) % EX_ORDER.length;
+  selectEx(EX_ORDER[idx], false);
+}
+
+function nextEx() {
+  const cur = currentEx || 'deadbug';
+  let idx = EX_ORDER.indexOf(cur);
+  idx = (idx + 1) % EX_ORDER.length;
+  selectEx(EX_ORDER[idx], false);
+}
+
+function selectEx(key, scroll=false) {
+  if (!DB[key]) return;
   currentEx = key;
   const d = DB[key];
+
+  // 1. 同步顶部适应症分类下的动作按钮
   ['prone', 'standing', 'deadbug', 'birddog', 'bridge', 'clamshell'].forEach(k => {
-    document.getElementById('btn_' + k).classList.toggle('active', k === key);
+    const btn = document.getElementById('btn_' + k);
+    if (btn) btn.classList.toggle('active', k === key);
+    const qbtn = document.getElementById('quick_' + k);
+    if (qbtn) qbtn.classList.toggle('active', k === key);
   });
+
+  // 2. 同步三大分型外框高亮
   ['boxGroupA', 'boxGroupB', 'boxGroupC'].forEach(g => {
-    document.getElementById(g).classList.toggle('active', g === d.group);
+    const el = document.getElementById(g);
+    if (el) el.classList.toggle('active', g === d.group);
   });
-  document.getElementById('exName').innerText = d.name;
-  document.getElementById('exGroupTag').innerText = d.groupTag;
-  document.getElementById('exTypeTag').innerText = d.typeTag;
-  document.getElementById('exContra').innerText = d.contra;
-  document.getElementById('exTarget').innerText = d.target;
-  document.getElementById('exCues').innerText = d.cues;
-  document.getElementById('exWarning').innerText = d.warning;
+
+  // 3. 刷新右侧要领卡内容
+  const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+  setEl('exName', d.name);
+  setEl('exGroupTag', d.groupTag);
+  setEl('exTypeTag', d.typeTag);
+  setEl('exContra', d.contra);
+  setEl('exTarget', d.target);
+  setEl('exCues', d.cues);
+  setEl('exWarning', d.warning);
+
+  // 4. 如果是在手机端点击顶部卡片，平滑滑动画布至屏幕正中央
+  if (scroll && window.innerWidth <= 960) {
+    const canvasWrap = document.querySelector('.canvas-wrapper');
+    if (canvasWrap) {
+      canvasWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
 }
 
 function togglePlay() {
