@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>腰痛运动疗法临床交互指南 · 生物力学工程版</title>
+<style>
+  :root {
+    --bg-page: #f8fafc;
+    --bg-card: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border-color: #e2e8f0;
+    --primary-green: #2d5a27;
+    --accent-gold: #d4af37;
+    --tag-blue: #0284c7;
+    --tag-red: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 24px 16px;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  .container { max-width: 1200px; margin: 0 auto; width: 100%; }
+  header { text-align: center; margin-bottom: 24px; }
+  h1 { font-size: 24px; color: var(--primary-green); font-weight: 700; margin-bottom: 6px; }
+  header p { color: var(--text-secondary); font-size: 13.5px; line-height: 1.4; }
+
+  /* 适应症三大分栏 */
+  .indication-groups {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .group-box {
+    background: #ffffff;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .group-box.active {
+    border-color: var(--primary-green);
+    background: #f4f8f3;
+  }
+  .group-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 6px;
+    line-height: 1.35;
+  }
+  .group-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin-bottom: 12px;
+    word-break: break-word;
+  }
+  .btn-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+  .ex-btn {
+    width: 100%;
+    padding: 8px 4px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: #ffffff;
+    color: var(--text-primary);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .ex-btn:hover { background: #f1f5f9; }
+  .ex-btn.active {
+    background: var(--primary-green);
+    color: #ffffff;
+    border-color: var(--primary-green);
+  }
+
+  /* 核心工作区 */
+  .workspace {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 20px;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+  }
+
+  .canvas-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #f1f5f9;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+  }
+  canvas { width: 100%; height: 100%; display: block; }
+
+  .ctrl-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .ctrl-bar-row1 { width: 100%; }
+  .slider {
+    width: 100%;
+    cursor: pointer;
+    accent-color: var(--primary-green);
+    height: 24px;
+  }
+  .ctrl-bar-row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.2fr;
+    gap: 8px;
+    width: 100%;
+  }
+  .ctrl-btn {
+    width: 100%;
+    padding: 8px 4px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: #ffffff;
+    color: var(--text-primary);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .ctrl-btn.active { background: #e2e8f0; }
+
+  /* 临床卡片 */
+  .clinical-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .card-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+  }
+  .card-header h2 {
+    font-size: 18px;
+    color: var(--primary-green);
+    font-weight: 700;
+  }
+  .card-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+  .pill {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .pill-green { background: #eef5ed; color: var(--primary-green); }
+  .pill-blue { background: #e0f2fe; color: #0369a1; }
+  .pill-amber { background: #fef3c7; color: #b45309; }
+
+  .info-block {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 10px 12px;
+    border-left: 3.5px solid var(--primary-green);
+  }
+  .info-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 4px;
+  }
+  .info-body {
+    font-size: 12.5px;
+    color: var(--text-primary);
+    line-height: 1.55;
+    word-break: break-word;
+  }
+
+  .contra-block {
+    background: #eff6ff;
+    border-left-color: #0284c7;
+  }
+  .contra-block .info-title { color: #0284c7; }
+
+  .warning-block {
+    background: #fef2f2;
+    border-left-color: var(--tag-red);
+  }
+  .warning-block .info-title { color: var(--tag-red); }
+
+  @media (max-width: 960px) {
+    body { padding: 12px 10px; }
+    h1 { font-size: 18px; }
+    header p { font-size: 11.5px; }
+    .indication-groups { grid-template-columns: 1fr; gap: 10px; margin-bottom: 14px; }
+    .group-box { padding: 12px; }
+    .workspace { grid-template-columns: 1fr; gap: 14px; padding: 12px; border-radius: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>腰痛运动疗法临床交互指南</h1>
+    <p>精准生物力学骨骼动捕引擎 · 对侧交叉动力链 · 适应症三联分群</p>
+  </header>
+
+  <!-- 适应症分群 -->
+  <div class="indication-groups">
+    <div class="group-box" id="boxGroupA">
+      <div class="group-title">分组一：盘源性 / 屈曲不耐受型</div>
+      <div class="group-desc">针对久坐前屈疼痛、髓核后突，借助上肢被动推撑驱动髓核向心化复位。</div>
+      <div class="btn-row">
+        <button class="ex-btn" id="btn_prone" onclick="selectEx('prone')">俯卧伸展</button>
+        <button class="ex-btn" id="btn_standing" onclick="selectEx('standing')">站立位后伸</button>
+      </div>
+    </div>
+
+    <div class="group-box active" id="boxGroupB">
+      <div class="group-title">分组二：节段微失稳 / 控制障碍型</div>
+      <div class="group-desc">针对多裂肌萎缩、腰椎微失稳，通过对角交叉动力链实现抗伸展与抗旋转。</div>
+      <div class="btn-row">
+        <button class="ex-btn active" id="btn_deadbug" onclick="selectEx('deadbug')">死虫式</button>
+        <button class="ex-btn" id="btn_birddog" onclick="selectEx('birddog')">鸟狗式</button>
+      </div>
+    </div>
+
+    <div class="group-box" id="boxGroupC">
+      <div class="group-title">分组三：骨盆代偿 / 臀肌短板型</div>
+      <div class="group-desc">针对骨盆前倾过大、竖脊肌过度收缩代偿，激活臀大肌伸髋与臀中肌侧向稳定。</div>
+      <div class="btn-row">
+        <button class="ex-btn" id="btn_bridge" onclick="selectEx('bridge')">臀桥</button>
+        <button class="ex-btn" id="btn_clamshell" onclick="selectEx('clamshell')">蚌式开合</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 核心交互区 -->
+  <div class="workspace">
+    <div>
+      <div class="canvas-wrapper">
+        <canvas id="motionCanvas" width="800" height="450"></canvas>
+      </div>
+      <div class="ctrl-bar">
+        <div class="ctrl-bar-row1" style="width:100%;">
+          <input type="range" class="slider" id="progressSlider" min="0" max="1" step="0.01" value="0" oninput="manualSeek(this.value)" style="width:100%;">
+        </div>
+        <div class="ctrl-bar-row2" style="width:100%; display:flex; gap:8px;">
+          <button class="ctrl-btn" id="playBtn" onclick="togglePlay()" style="flex:1;">⏸ 暂停</button>
+          <button class="ctrl-btn" id="speedBtn" onclick="toggleSpeed()" style="flex:1;">调速: 1.0x</button>
+          <button class="ctrl-btn active" id="glowBtn" onclick="toggleGlow()" style="flex:1.2;">🔥 肌群高亮: 开</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧临床要领卡 -->
+    <div class="clinical-card">
+      <div class="card-header">
+        <h2 id="exName">死虫式 Dead Bug</h2>
+        <div class="card-tags">
+          <span class="pill pill-green" id="exGroupTag">节段微失稳型</span>
+          <span class="pill pill-blue" id="exTypeTag">核心抗伸展 · 对侧交互</span>
+        </div>
+      </div>
+
+      <div class="info-block contra-block">
+        <div class="info-title">对侧力学基准（严格对齐）</div>
+        <div class="info-body" id="exContra">
+          【近侧臂向后延展】+【远侧下肢向前蹬出】必须全程悬空离地 5 至 10cm（绝不触地卸力！）；【远侧臂】与【近侧下肢】严格垂直 90° 桌面位锁定在空中！
+        </div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-title">适用人群与临床目标</div>
+        <div class="info-body" id="exTarget">
+          腰椎节段微失稳、久坐起身无承托、骨盆前倾导致竖脊肌紧绷酸痛者。
+        </div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-title">动作要领与生物力学指令</div>
+        <div class="info-body" id="exCues">
+          仰卧屈髋膝 90°，四肢垂直在空中呈桌面位；下背部死死焊在垫面上；对侧手脚缓慢向远端对向延展，离地 5cm 悬停，全程维持下背零缝隙。
+        </div>
+      </div>
+
+      <div class="info-block warning-block">
+        <div class="info-title">绝对禁忌与代偿红线</div>
+        <div class="info-body" id="exWarning">
+          肢体伸展时若下背离开垫面反弓拱起，说明核心失控、腰椎代偿，应立即缩短延展幅度，以能压实下背为唯一标准。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('motionCanvas');
+const ctx = canvas.getContext('2d');
+const W = 800, H = 450;
+
+let currentEx = 'deadbug';
+let isPlaying = true;
+let speed = 1.0;
+let showGlow = true;
+let animPhase = 0;
+let lastTimestamp = performance.now();
+
+const DB = {
+  prone: {
+    group: 'boxGroupA',
+    name: '俯卧伸展 Prone Press-up', groupTag: '盘源性 / 屈曲不耐受型', typeTag: '麦肯基 MDT · 髓核向心化',
+    contra: '【双臂主动推撑】+【骨盆沉贴垫面】：骨盆与下半身完全贴垫，全靠双臂力量推起上身，腰腹臀肌严禁主动收缩挺身！',
+    target: '盘源性腰痛、久坐弯腰刺痛、后仰舒适、椎间盘膨出/轻度突出者。',
+    cues: '俯卧胸侧撑手，呼气时由双臂将上身撑起，腰部彻底放松被动展开，髓核向前向心移动。',
+    warning: '严禁腰部肌肉主动发力硬挺；若后伸出现下肢放电样刺痛或后小关节绞锁，立即停止。'
+  },
+  standing: {
+    group: 'boxGroupA',
+    name: '站立位后伸 Standing Extension', groupTag: '盘源性 / 屈曲不耐受型', typeTag: '立姿间歇复位 · 办公室首选',
+    contra: '【双手推骨盆向前】+【躯干被动向后展】：双膝伸直不可曲蹲，双手虎口紧顶腰骶向前平移骨盆，引导腰椎被动向后展开。',
+    target: '办公室长时间伏案久坐后的突发僵硬酸痛、无躺下场地时的即刻向心化复位。',
+    cues: '站立双脚与肩同宽，膝伸直；双手顶住腰骶向前平移骨盆，胸廓自然向后被动伸展。',
+    warning: '双膝切忌曲膝下蹲作假；不可单靠折叠颈椎后仰作假代偿。'
+  },
+  deadbug: {
+    group: 'boxGroupB',
+    name: '死虫式 Dead Bug', groupTag: '节段微失稳型', typeTag: '核心抗伸展 · 对侧交互',
+    contra: '【四肢悬空在空中起始】+【对侧伸展全程悬空 5cm】：近侧臂向后伸、远侧腿向前蹬，全程离地 5 至 10cm 悬空蓄力，绝不落地卸力！另一组手腿在空中 90° 桌面位焊死！',
+    target: '腰椎节段微失稳、久坐起身脱力、骨盆前倾导致的竖脊肌过度收紧代偿人群。',
+    cues: '仰卧，四肢朝天呈 90° 桌面位悬空，后脑与下背贴死垫面；对侧手腿向远端伸展至悬空离地 5cm，维持下背零缝隙。',
+    warning: '肢体伸展时下背若反弓离地，说明核心崩溃代偿，必须缩短延展距离。'
+  },
+  birddog: {
+    group: 'boxGroupB',
+    name: '鸟狗式 Bird Dog', groupTag: '节段微失稳型', typeTag: '脊柱抗旋转 · 对侧交叉',
+    contra: '【前臂+后腿水平平直延伸】+【手腕对肩+膝盖对髋垂直支撑】：后斜动力链联动！远侧手垂直撑垫，近侧膝垂直跪垫，颈椎平直微收下巴。',
+    target: '多裂肌萎缩、单侧抗旋转能力差、久坐后腰椎深层不稳者。',
+    cues: '标准四足跪姿，近侧手前伸至耳旁，远侧腿后蹬与身体平齐；骨盆水平零晃动。',
+    warning: '后蹬腿严禁向上过高抬起导致腰椎反弓超伸；支撑膝盖必须实实在在跪在垫面上。'
+  },
+  bridge: {
+    group: 'boxGroupC',
+    name: '臀桥 Glute Bridge', groupTag: '骨盆代偿 / 臀肌短板型', typeTag: '伸髋动力链 · 消除代偿',
+    contra: '【臀大肌主动驱动伸髋】+【肩-髋-膝平直斜线】：双足踏地，以髋为单一转轴顶起骨盆，严禁肋骨外翻挺肚子作假伸髋。',
+    target: '臀肌失忆症、骨盆过度前倾导致竖脊肌被迫代偿发力酸痛者。',
+    cues: '仰卧屈膝，脚踩地；收缩臀大肌将骨盆顶起至躯干呈平直斜线，顶峰夹紧臀部 2 秒。',
+    warning: '严禁依靠过度挺肚子或腰椎超伸反弓来追求高度；动作顶点必须纯由臀部承托。'
+  },
+  clamshell: {
+    group: 'boxGroupC',
+    name: '蚌式开合 Clamshell', groupTag: '骨盆代偿 / 臀肌短板型', typeTag: '骨盆侧向稳定 · 臀中肌',
+    contra: '【双脚后跟相贴为轴】+【上侧膝盖向上向外开合】：骨盆垂直地面绝不向后翻倒，纯由上侧臀中肌主导外展外旋。',
+    target: '走路走多腰酸、骨盆侧向晃动不稳、单腿支撑失衡者。',
+    cues: '侧卧屈膝90°，脚后跟并拢为轴；收缩臀中肌将上侧膝盖如蚌壳般向上打开。',
+    warning: '骨盆切忌顺势向后翻倒；若翻倒说明代偿，应缩小开合角度。'
+  }
+};
+
+function selectEx(key) {
+  currentEx = key;
+  const d = DB[key];
+  ['prone', 'standing', 'deadbug', 'birddog', 'bridge', 'clamshell'].forEach(k => {
+    document.getElementById('btn_' + k).classList.toggle('active', k === key);
+  });
+  ['boxGroupA', 'boxGroupB', 'boxGroupC'].forEach(g => {
+    document.getElementById(g).classList.toggle('active', g === d.group);
+  });
+  document.getElementById('exName').innerText = d.name;
+  document.getElementById('exGroupTag').innerText = d.groupTag;
+  document.getElementById('exTypeTag').innerText = d.typeTag;
+  document.getElementById('exContra').innerText = d.contra;
+  document.getElementById('exTarget').innerText = d.target;
+  document.getElementById('exCues').innerText = d.cues;
+  document.getElementById('exWarning').innerText = d.warning;
+}
+
+function togglePlay() {
+  isPlaying = !isPlaying;
+  document.getElementById('playBtn').innerText = isPlaying ? '⏸ 暂停' : '▶ 播放';
+}
+function toggleSpeed() {
+  speed = speed === 1.0 ? 0.5 : (speed === 0.5 ? 1.5 : 1.0);
+  document.getElementById('speedBtn').innerText = `调速: ${speed.toFixed(1)}x`;
+}
+function toggleGlow() {
+  showGlow = !showGlow;
+  const b = document.getElementById('glowBtn');
+  b.innerText = showGlow ? '🔥 肌群高亮: 开' : '⚪ 肌群高亮: 关';
+  b.classList.toggle('active', showGlow);
+}
+function manualSeek(v) { animPhase = parseFloat(v); }
+function easeInOut(t) { return 0.5 * (1 - Math.cos(Math.PI * t)); }
+
+// ==========================================
+// BIOMECHANICAL KINEMATIC ENGINE (MAYA ARCHITECTURE)
+// ==========================================
+function drawBone(p1, p2, width, color, dashed=false) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
+  ctx.lineWidth = width;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = color;
+  if (dashed) {
+    ctx.setLineDash([5, 4]);
+  } else {
+    ctx.setLineDash([]);
+  }
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawJoint(p, r, color='#d4af37', isFar=false) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.strokeStyle = isFar ? '#cbd5e1' : '#ffffff';
+  ctx.lineWidth = isFar ? 1 : 1.5;
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawGlow(p, radius, colorHex, intensity) {
+  if (!showGlow || intensity <= 0.05) return;
+  ctx.save();
+  const rad = radius * (0.8 + 0.5 * intensity);
+  const grad = ctx.createRadialGradient(p.x, p.y, 2, p.x, p.y, rad);
+  grad.addColorStop(0, colorHex);
+  grad.addColorStop(0.4, colorHex.replace(')', ', ' + (0.45 * intensity) + ')').replace('rgb', 'rgba'));
+  grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, rad * 1.3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+// 核心渲染循环
+function renderFrame(p) {
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+
+  // Background Studio Grid
+  ctx.strokeStyle = 'rgba(203, 213, 225, 0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let x = 40; x < W; x += 80) { ctx.moveTo(x, 20); ctx.lineTo(x, 420); }
+  ctx.stroke();
+
+  // Studio Mat Line
+  const matY = 320;
+  ctx.fillStyle = '#0d9488';
+  ctx.beginPath();
+  ctx.roundRect(40, matY, W - 80, 8, 4);
+  ctx.fill();
+
+  // On-Canvas Space Decoupling Legend
+  ctx.save();
+  ctx.fillStyle = '#ffffff';
+  ctx.strokeStyle = '#e2e8f0';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.roundRect(40, 18, 410, 34, 8);
+  ctx.fill();
+  ctx.stroke();
+
+  // Near legend
+  ctx.strokeStyle = '#2d5a27'; ctx.lineWidth = 6; ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(55, 35); ctx.lineTo(85, 35); ctx.stroke();
+  ctx.beginPath(); ctx.arc(70, 35, 4.5, 0, Math.PI*2); ctx.fillStyle = '#d4af37'; ctx.fill();
+  ctx.font = 'bold 12.5px sans-serif'; ctx.fillStyle = '#1e3a1e';
+  ctx.fillText('近侧 (实线深绿 · 主动)', 95, 39);
+
+  // Far legend
+  ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 4.5; ctx.setLineDash([4, 3]);
+  ctx.beginPath(); ctx.moveTo(255, 35); ctx.lineTo(285, 35); ctx.stroke();
+  ctx.beginPath(); ctx.arc(270, 35, 3.5, 0, Math.PI*2); ctx.fillStyle = '#94a3b8'; ctx.fill();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#64748b';
+  ctx.fillText('远侧 (虚线冷灰 · 背侧)', 295, 39);
+  ctx.restore();
+
+  const cForeground = '#2d5a27';
+  const cBackground = '#8fa38d';
+
+  // 1. 死虫式 (纠正力学：悬空力学 + 90度空中桌面位)
+  if (currentEx === 'deadbug') {
+    const cy = matY - 4;
+    const cx = W * 0.5;
+
+    const shoulder = { x: cx - 60, y: cy - 6 };
+    const hip = { x: cx + 60, y: cy - 6 };
+
+    // Spine flat on mat
+    drawBone(shoulder, hip, 12, cForeground);
+
+    // Head flat on mat looking UP
+    ctx.beginPath();
+    ctx.arc(shoulder.x - 24, shoulder.y - 6, 13, 0, Math.PI * 2);
+    ctx.fillStyle = cForeground;
+    ctx.fill();
+
+    // Red Anchor line (下背死死压实垫面，严禁反弓)
+    ctx.strokeStyle = '#ef4444';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(shoulder.x + 20, cy); ctx.lineTo(hip.x - 20, cy);
+    ctx.stroke();
+
+    // STATIC CONTRALATERAL PAIR (锁定在空中：垂直手臂 + 90度桌面腿)
+    // Far Arm: 垂直朝天
+    const farArmTop = { x: shoulder.x, y: shoulder.y - 85 };
+    drawBone(shoulder, farArmTop, 5.5, '#94a3b8', true);
+    drawJoint(farArmTop, 3.5, '#94a3b8', true);
+
+    // Near Leg: 悬空 90/90 桌面位 (空中倒桌子)
+    const nearKnee = { x: hip.x, y: hip.y - 75 };
+    const nearAnkle = { x: hip.x + 80, y: nearKnee.y };
+    drawBone(hip, nearKnee, 8, cForeground);
+    drawBone(nearKnee, nearAnkle, 6, cForeground);
+    drawJoint(nearKnee, 5, '#d4af37');
+    drawJoint(nearAnkle, 4, '#d4af37');
+
+    // DYNAMIC EXTENDING PAIR (对侧对向延展：悬空离地 5 至 10cm，绝不触地卸力！)
+    // Near Arm: 从垂直朝天向后延展至头部后方（悬空离地 10cm）
+    const armRad = (Math.PI / 2) * p;
+    const nearArmEnd = {
+      x: shoulder.x - Math.sin(armRad) * 95,
+      y: (shoulder.y - 85) + Math.sin(armRad) * 75
+    };
+    drawBone(shoulder, nearArmEnd, 7, cForeground);
+    drawJoint(nearArmEnd, 5, '#d4af37');
+
+    // Far Leg: 从空中 90/90 桌面位向前方水平蹬出（悬空离地 10cm）
+    const farKnee = {
+      x: hip.x + 75 * p,
+      y: (hip.y - 70) + 60 * p
+    };
+    const farAnkle = {
+      x: farKnee.x + 85,
+      y: farKnee.y - 5
+    };
+    drawBone(hip, farKnee, 6, '#94a3b8', true);
+    drawBone(farKnee, farAnkle, 5, '#94a3b8', true);
+    drawJoint(farKnee, 3.5, '#94a3b8', true);
+    drawJoint(farAnkle, 3, '#94a3b8', true);
+
+    // Joints
+    drawJoint(shoulder, 6, '#d4af37');
+    drawJoint(hip, 6.5, '#d4af37');
+
+    // 核心抗伸展激活光晕
+    drawGlow({ x: cx, y: cy - 12 }, 36, 'rgb(6, 182, 212)', p);
+
+    // 对侧动态对准虚线
+    if (p > 0.3) {
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(nearArmEnd.x, nearArmEnd.y); ctx.lineTo(farAnkle.x, farAnkle.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // 2. 鸟狗式 (对侧抗旋转)
+  else if (currentEx === 'birddog') {
+    const cy = matY - 75;
+    const cx = W * 0.5;
+
+    const shoulder = { x: cx - 75, y: cy };
+    const hip = { x: cx + 75, y: cy };
+
+    // Spine Neutral bar
+    drawBone(shoulder, hip, 12, cForeground);
+
+    // Cervical spine neutral head
+    ctx.beginPath();
+    ctx.arc(shoulder.x - 30, shoulder.y - 5, 13, 0, Math.PI * 2);
+    ctx.fillStyle = cForeground;
+    ctx.fill();
+
+    // SUPPORT LIMBS (手腕对肩垂直撑垫，膝盖对髋垂直跪垫)
+    const farHand = { x: shoulder.x, y: matY };
+    drawBone(shoulder, farHand, 5.5, '#94a3b8', true);
+    drawJoint(farHand, 3.5, '#94a3b8', true);
+
+    const nearKnee = { x: hip.x, y: matY };
+    const nearFoot = { x: hip.x + 50, y: matY };
+    drawBone(hip, nearKnee, 8, cForeground);
+    drawBone(nearKnee, nearFoot, 6, cForeground);
+    drawJoint(nearKnee, 5.5, '#d4af37');
+
+    // DYNAMIC EXTENDING PAIR (水平延展，骨盆绝不反弓)
+    const nearArmEnd = {
+      x: shoulder.x - 15 - p * 85,
+      y: (shoulder.y + 70) - p * 70
+    };
+    drawBone(shoulder, nearArmEnd, 7, cForeground);
+    drawJoint(nearArmEnd, 5, '#d4af37');
+
+    const farKneeEnd = {
+      x: hip.x + 15 + p * 65,
+      y: (hip.y + 70) - p * 70
+    };
+    const farAnkleEnd = {
+      x: farKneeEnd.x + p * 75,
+      y: farKneeEnd.y
+    };
+    drawBone(hip, farKneeEnd, 6, '#94a3b8', true);
+    drawBone(farKneeEnd, farAnkleEnd, 5, '#94a3b8', true);
+    drawJoint(farKneeEnd, 3.5, '#94a3b8', true);
+    drawJoint(farAnkleEnd, 3, '#94a3b8', true);
+
+    drawJoint(shoulder, 6, '#d4af37');
+    drawJoint(hip, 6.5, '#d4af37');
+
+    drawGlow({ x: hip.x + 10, y: cy }, 34, 'rgb(245, 158, 11)', p); // 臀大肌
+    drawGlow({ x: cx - 10, y: cy }, 28, 'rgb(6, 182, 212)', p);   // 多裂肌/核心
+
+    if (p > 0.4) {
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(nearArmEnd.x, nearArmEnd.y); ctx.lineTo(farAnkleEnd.x, farAnkleEnd.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // 3. 俯卧伸展 (麦肯基卧姿复位)
+  else if (currentEx === 'prone') {
+    const hip = { x: W * 0.55, y: matY - 6 };
+    const ankle = { x: W * 0.88, y: matY - 6 };
+
+    // Pelvis pinned to mat
+    drawBone(hip, ankle, 9, cForeground);
+
+    // Spine arching upwards
+    const shoulder = {
+      x: hip.x - 110,
+      y: hip.y - 20 - p * 80
+    };
+    drawBone(hip, shoulder, 12, cForeground);
+
+    // Head
+    ctx.beginPath();
+    ctx.arc(shoulder.x - 20, shoulder.y - 18, 13, 0, Math.PI * 2);
+    ctx.fillStyle = cForeground;
+    ctx.fill();
+
+    // Arm pushing up
+    const hand = { x: shoulder.x + 25, y: matY };
+    drawBone(shoulder, hand, 7, cForeground);
+    drawJoint(hand, 4.5, '#d4af37');
+
+    // Pelvis pin
+    ctx.fillStyle = '#ef4444';
+    ctx.beginPath();
+    ctx.arc(hip.x, matY, 6, 0, Math.PI * 2);
+    ctx.fill();
+
+    drawJoint(hip, 6.5, '#d4af37');
+    drawJoint(shoulder, 6, '#d4af37');
+
+    drawGlow({ x: (hip.x + shoulder.x)/2, y: (hip.y + shoulder.y)/2 }, 36, 'rgb(34, 197, 94)', p);
+  }
+
+  // 4. 站立后伸 (麦肯基立姿复位)
+  else if (currentEx === 'standing') {
+    const cx = W * 0.5;
+    const ankle = { x: cx, y: matY };
+    const knee = { x: cx, y: matY - 80 };
+    const hip = { x: cx - p * 30, y: matY - 150 };
+
+    // Straight legs
+    drawBone(ankle, knee, 8, cForeground);
+    drawBone(knee, hip, 9, cForeground);
+    drawJoint(knee, 5, '#d4af37');
+
+    // Torso arching back
+    const shoulder = {
+      x: hip.x + 35 * p,
+      y: hip.y - 75 + 10 * p
+    };
+    drawBone(hip, shoulder, 12, cForeground);
+
+    ctx.beginPath();
+    ctx.arc(shoulder.x + 15 * p, shoulder.y - 22, 13, 0, Math.PI * 2);
+    ctx.fillStyle = cForeground;
+    ctx.fill();
+
+    // Hands on sacrum
+    const elbow = { x: shoulder.x + 24, y: shoulder.y + 35 };
+    const hand = { x: hip.x + 8, y: hip.y - 15 };
+    drawBone(shoulder, elbow, 6, cBackground);
+    drawBone(elbow, hand, 6, '#d4af37');
+    drawJoint(hand, 4.5, '#d4af37');
+
+    drawJoint(hip, 6.5, '#d4af37');
+    drawJoint(shoulder, 6, '#d4af37');
+
+    drawGlow(hip, 30, 'rgb(34, 197, 94)', p);
+
+    if (p > 0.4) {
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(hip.x + 20, hip.y); ctx.lineTo(hip.x - 30, hip.y);
+      ctx.stroke();
+    }
+  }
+
+  // 5. 臀桥 (伸髋动力)
+  else if (currentEx === 'bridge') {
+    const shoulder = { x: W * 0.28, y: matY - 6 };
+    const foot = { x: W * 0.72, y: matY };
+
+    const hip = {
+      x: W * 0.48,
+      y: matY - 15 - p * 75
+    };
+    const knee = {
+      x: W * 0.62,
+      y: matY - 45 - p * 35
+    };
+
+    // Legs
+    drawBone(foot, knee, 8, cForeground);
+    drawBone(knee, hip, 9, cForeground);
+    // Torso
+    drawBone(hip, shoulder, 12, cForeground);
+
+    ctx.beginPath();
+    ctx.arc(shoulder.x - 22, shoulder.y - 5, 13, 0, Math.PI * 2);
+    ctx.fillStyle = cForeground;
+    ctx.fill();
+
+    drawJoint(shoulder, 6, '#d4af37');
+    drawJoint(hip, 6.5, '#d4af37');
+    drawJoint(knee, 5, '#d4af37');
+    drawJoint(foot, 4.5, '#d4af37');
+
+    drawGlow({ x: hip.x - 10, y: hip.y + 10 }, 36, 'rgb(245, 158, 11)', p);
+
+    if (p > 0.6) {
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(shoulder.x, shoulder.y); ctx.lineTo(knee.x, knee.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // 6. 蚌式开合 (骨盆侧向稳定)
+  else if (currentEx === 'clamshell') {
+    const cy = matY - 30;
+    const shoulder = { x: W * 0.32, y: cy };
+    const hip = { x: W * 0.54, y: cy };
+    const feet = { x: W * 0.74, y: matY };
+
+    drawBone(shoulder, hip, 12, cForeground);
+
+    ctx.beginPath();
+    ctx.arc(shoulder.x - 22, shoulder.y - 8, 13, 0, Math.PI * 2);
+    ctx.fillStyle = cForeground;
+    ctx.fill();
+
+    // Bottom leg flat on mat
+    const bKnee = { x: W * 0.66, y: matY };
+    drawBone(hip, bKnee, 6, '#94a3b8', true);
+    drawBone(bKnee, feet, 5, '#94a3b8', true);
+
+    // Top leg opening up
+    const tKnee = {
+      x: W * 0.64,
+      y: matY - p * 65
+    };
+    drawBone(hip, tKnee, 8, cForeground);
+    drawBone(tKnee, feet, 6, cForeground);
+
+    drawJoint(hip, 6.5, '#d4af37');
+    drawJoint(tKnee, 5, '#d4af37');
+    drawJoint(feet, 4.5, '#d4af37');
+
+    drawGlow({ x: hip.x + 12, y: hip.y - 12 }, 32, 'rgb(245, 158, 11)', p);
+  }
+}
+
+function animate(timestamp) {
+  const dt = (timestamp - lastTimestamp) / 1000;
+  lastTimestamp = timestamp;
+
+  if (isPlaying) {
+    animPhase = (animPhase + (dt * speed) / 2.0) % 1.0;
+    document.getElementById('progressSlider').value = animPhase;
+  }
+
+  const p = animPhase < 0.5 ? animPhase / 0.5 : 1 - (animPhase - 0.5) / 0.5;
+  const eased = easeInOut(p);
+
+  renderFrame(eased);
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>
