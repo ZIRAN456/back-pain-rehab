@@ -9,101 +9,140 @@
 <title>腰痛运动疗法临床交互指南 · 生物力学工程版</title>
 <style>
   :root {
-    --bg-page: #f8fafc;
-    --bg-card: #ffffff;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --border-color: #e2e8f0;
     --primary-green: #2d5a27;
+    --primary-green-light: #f4f8f3;
     --accent-gold: #d4af37;
+    --border-color: #cbd5e1;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
     --tag-blue: #0284c7;
     --tag-red: #ef4444;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg-page);
-    color: var(--text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
-    padding: 24px 16px;
+  html, body {
+    width: 100%;
     max-width: 100vw;
     overflow-x: hidden;
+    background: #f8fafc;
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
-  .container { max-width: 1200px; margin: 0 auto; width: 100%; }
-  header { text-align: center; margin-bottom: 24px; }
-  h1 { font-size: 24px; color: var(--primary-green); font-weight: 700; margin-bottom: 6px; }
-  header p { color: var(--text-secondary); font-size: 13.5px; line-height: 1.4; }
+  body {
+    padding: 16px 12px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: 21px;
+    color: var(--primary-green);
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  header p {
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.4;
+  }
 
-  /* 适应症三大分栏 */
-  .indication-groups {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 20px;
-  }
-  .group-box {
+  /* 顶部紧凑型适应症分型选项卡 (移动端1屏通览核心) */
+  .indication-tabs-wrapper {
     background: #ffffff;
     border: 1.5px solid var(--border-color);
-    border-radius: 12px;
-    padding: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    border-radius: 14px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.03);
   }
-  .group-box.active {
-    border-color: var(--primary-green);
-    background: #f4f8f3;
-  }
-  .group-title {
-    font-size: 13.5px;
-    font-weight: 700;
-    color: var(--primary-green);
-    margin-bottom: 6px;
-    line-height: 1.35;
-  }
-  .group-desc {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.45;
-    margin-bottom: 12px;
-    word-break: break-word;
-  }
-  .btn-row {
+  .tabs-nav {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 8px;
   }
-  .ex-btn {
-    width: 100%;
+  .tab-btn {
     padding: 8px 4px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
-    background: #ffffff;
-    color: var(--text-primary);
-    font-size: 12.5px;
-    font-weight: 600;
+    background: #f1f5f9;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s;
     text-align: center;
-    white-space: nowrap;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s ease;
   }
-  .ex-btn:hover { background: #f1f5f9; }
-  .ex-btn.active {
+  .tab-btn.active {
     background: var(--primary-green);
     color: #ffffff;
     border-color: var(--primary-green);
+    box-shadow: 0 2px 6px rgba(45, 90, 39, 0.25);
+  }
+  .tab-desc-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--primary-green-light);
+    border: 1px solid rgba(45, 90, 39, 0.2);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+  }
+  .tab-desc-text {
+    font-size: 12px;
+    color: var(--primary-green);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  .actions-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+  }
+  .ex-pill-btn {
+    padding: 8px 4px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border-color);
+    background: #ffffff;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s ease;
+  }
+  .ex-pill-btn:active {
+    transform: scale(0.96);
+  }
+  .ex-pill-btn.active {
+    background: var(--primary-green);
+    color: #ffffff;
+    border-color: var(--primary-green);
+    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.25);
   }
 
-  /* 核心工作区 */
+  /* 核心工作区 (画布 + 右侧/下方要领卡) */
   .workspace {
     display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 20px;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 16px;
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 16px;
-    padding: 20px;
+    padding: 16px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.04);
   }
 
@@ -116,30 +155,34 @@
     overflow: hidden;
     border: 1px solid #cbd5e1;
   }
-  canvas { width: 100%; height: 100%; display: block; }
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
 
+  /* 播放器控制器 */
   .ctrl-bar {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 12px;
+    gap: 8px;
+    margin-top: 10px;
   }
-  .ctrl-bar-row1 { width: 100%; }
   .slider {
     width: 100%;
     cursor: pointer;
     accent-color: var(--primary-green);
-    height: 24px;
+    height: 22px;
   }
-  .ctrl-bar-row2 {
+  .ctrl-btn-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1.2fr;
-    gap: 8px;
+    grid-template-columns: 1fr 1.2fr 1fr 1fr 1.2fr;
+    gap: 6px;
     width: 100%;
   }
   .ctrl-btn {
     width: 100%;
-    padding: 8px 4px;
+    padding: 9px 4px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
     background: #ffffff;
@@ -149,174 +192,89 @@
     cursor: pointer;
     text-align: center;
     white-space: nowrap;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
-  .ctrl-btn.active { background: #e2e8f0; }
+  .ctrl-btn:active {
+    transform: scale(0.96);
+  }
+  .ctrl-btn.active {
+    background: #e2e8f0;
+  }
 
-  /* 临床卡片 */
+  /* 临床要领卡片 */
   .clinical-card {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
   }
   .card-header {
     border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
+    padding-bottom: 8px;
   }
   .card-header h2 {
-    font-size: 18px;
+    font-size: 17px;
     color: var(--primary-green);
-    font-weight: 700;
+    font-weight: 800;
   }
   .card-tags {
     display: flex;
     gap: 6px;
-    margin-top: 6px;
-    flex-wrap: wrap;
+    margin-top: 4px;
   }
   .pill {
     padding: 3px 8px;
     border-radius: 6px;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
   }
-  .pill-green { background: #eef5ed; color: var(--primary-green); }
-  .pill-blue { background: #e0f2fe; color: #0369a1; }
-  .pill-amber { background: #fef3c7; color: #b45309; }
+  .pill-green { background: #dcfce7; color: #166534; }
+  .pill-blue { background: #e0f2fe; color: #075985; }
 
   .info-block {
     background: #f8fafc;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: 10px 12px;
+    padding: 8px 10px;
     border-left: 3.5px solid var(--primary-green);
   }
   .info-title {
     font-size: 12px;
     font-weight: 700;
     color: var(--primary-green);
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
   .info-body {
-    font-size: 12.5px;
-    color: var(--text-primary);
-    line-height: 1.55;
+    font-size: 12px;
+    color: #334155;
+    line-height: 1.45;
     word-break: break-word;
   }
-
   .contra-block {
     background: #eff6ff;
-    border-left-color: #0284c7;
+    border-left-color: var(--tag-blue);
   }
-  .contra-block .info-title { color: #0284c7; }
-
+  .contra-block .info-title { color: var(--tag-blue); }
   .warning-block {
     background: #fef2f2;
     border-left-color: var(--tag-red);
   }
   .warning-block .info-title { color: var(--tag-red); }
 
+  /* 移动端深度优化 (< 960px) */
   @media (max-width: 960px) {
-    body { padding: 12px 10px; }
+    body { padding: 10px 8px; }
     h1 { font-size: 18px; }
-    header p { font-size: 11.5px; }
-    .indication-groups { grid-template-columns: 1fr; gap: 10px; margin-bottom: 14px; }
-    .group-box { padding: 12px; }
-    .workspace { grid-template-columns: 1fr; gap: 14px; padding: 12px; border-radius: 12px; }
-  }
-
-  /* 移动端与桌面通用快捷动作切换条 */
-  .quick-switcher-bar {
-    background: #f8fafc;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 10px 12px;
-    margin-bottom: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .quick-switcher-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .quick-switcher-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--primary-green);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .quick-switcher-hint {
-    font-size: 11px;
-    color: var(--text-secondary);
-  }
-  .quick-switcher-btns {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 6px;
-    width: 100%;
-  }
-  .quick-btn {
-    padding: 9px 4px;
-    border-radius: 8px;
-    border: 1.5px solid var(--border-color);
-    background: #ffffff;
-    color: var(--text-primary);
-    font-size: 12.5px;
-    font-weight: 600;
-    cursor: pointer;
-    text-align: center;
-    white-space: nowrap;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-    transition: all 0.15s ease-in-out;
-  }
-  .quick-btn:active {
-    transform: scale(0.96);
-  }
-  .quick-btn.active {
-    background: var(--primary-green);
-    color: #ffffff;
-    border-color: var(--primary-green);
-    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.25);
-  }
-
-  /* 增强所有可点击元素的触控响应 */
-  .ex-btn, .ctrl-btn, .quick-btn {
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  .ex-btn:active, .ctrl-btn:active {
-    transform: scale(0.96);
-  }
-
-  /* 顶部适应症卡片点击优化 */
-  .group-box {
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-
-  @media (max-width: 960px) {
-    .quick-switcher-btns {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-    }
-    .quick-btn {
-      padding: 10px 2px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-    .ctrl-bar-row2 {
+    header { margin-bottom: 8px; }
+    .tabs-nav { gap: 4px; }
+    .tab-btn { font-size: 11.5px; padding: 7px 2px; }
+    .actions-row { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .ex-pill-btn { padding: 8px 2px; font-size: 12.5px; }
+    .workspace { grid-template-columns: 1fr; gap: 12px; padding: 10px; border-radius: 12px; }
+    .ctrl-btn-row { grid-template-columns: 1fr 1.2fr 1fr; gap: 6px; }
+    .ctrl-btn-row-sub {
       display: grid !important;
-      grid-template-columns: 1fr 1.2fr 1fr;
-      gap: 6px !important;
-    }
-    .ctrl-bar-subrow {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1.2fr;
       gap: 6px;
       margin-top: 6px;
     }
@@ -324,82 +282,55 @@
 </style>
 </head>
 <body>
-
 <div class="container">
   <header>
     <h1>腰痛运动疗法临床交互指南</h1>
     <p>精准生物力学骨骼动捕引擎 · 对侧交叉动力链 · 适应症三联分群</p>
   </header>
 
-  <!-- 适应症分群 -->
-  <div class="indication-groups">
-    <div class="group-box" id="boxGroupA">
-      <div class="group-title">分组一：弯腰/久坐就疼型（椎间盘怕前屈）</div>
-      <div class="group-desc">久坐、弯腰系鞋带或搬东西瞬间刺痛，但躺平或双手叉腰往后仰身腰痛立马减轻。</div>
-      <div class="btn-row">
-        <button class="ex-btn" id="btn_prone" onclick="selectEx('prone', true)">俯卧伸展</button>
-        <button class="ex-btn" id="btn_standing" onclick="selectEx('standing', true)">站立位后伸</button>
-      </div>
+  <!-- 顶部轻量级分型切换器 (首屏可全览动画) -->
+  <div class="indication-tabs-wrapper">
+    <div class="tabs-nav">
+      <button type="button" class="tab-btn" id="tab_groupA" onclick="switchGroup('boxGroupA')">1. 弯腰/久坐就疼</button>
+      <button type="button" class="tab-btn active" id="tab_groupB" onclick="switchGroup('boxGroupB')">2. 起身脱力怕闪腰</button>
+      <button type="button" class="tab-btn" id="tab_groupC" onclick="switchGroup('boxGroupC')">3. 久站腰酸假翘臀</button>
+    </div>
+    
+    <div class="tab-desc-row">
+      <div class="tab-desc-text" id="groupDescText">早晨刷牙微弯腰突然脱力像要闪腰；久坐起身瞬间直不起腰，必须双手撑膝盖借力。</div>
     </div>
 
-    <div class="group-box active" id="boxGroupB">
-      <div class="group-title">分组二：起身脱力/怕闪腰型（深层肌肉没劲）</div>
-      <div class="group-desc">早晨刷牙微弯腰突然脱力像要闪腰；久坐起身瞬间直不起腰，必须双手撑膝盖才能站直。</div>
-      <div class="btn-row">
-        <button class="ex-btn active" id="btn_deadbug" onclick="selectEx('deadbug', true)">死虫式</button>
-        <button class="ex-btn" id="btn_birddog" onclick="selectEx('birddog', true)">鸟狗式</button>
-      </div>
-    </div>
-
-    <div class="group-box" id="boxGroupC">
-      <div class="group-title">分组三：久站腰酸/假翘臀型（屁股没劲累后腰）</div>
-      <div class="group-desc">排队逛街站超15分钟后腰酸紧想捶腰；走路左右晃腰；肚子前凸后腰死命凹（假翘臀）。</div>
-      <div class="btn-row">
-        <button class="ex-btn" id="btn_bridge" onclick="selectEx('bridge', true)">臀桥</button>
-        <button class="ex-btn" id="btn_clamshell" onclick="selectEx('clamshell', true)">蚌式开合</button>
-      </div>
+    <!-- 6个动作平铺直选按钮 (一键直达) -->
+    <div class="actions-row">
+      <button type="button" class="ex-pill-btn" id="btn_prone" onclick="selectEx('prone')">俯卧伸展</button>
+      <button type="button" class="ex-pill-btn" id="btn_standing" onclick="selectEx('standing')">站立后伸</button>
+      <button type="button" class="ex-pill-btn active" id="btn_deadbug" onclick="selectEx('deadbug')">死虫式</button>
+      <button type="button" class="ex-pill-btn" id="btn_birddog" onclick="selectEx('birddog')">鸟狗式</button>
+      <button type="button" class="ex-pill-btn" id="btn_bridge" onclick="selectEx('bridge')">臀桥</button>
+      <button type="button" class="ex-pill-btn" id="btn_clamshell" onclick="selectEx('clamshell')">蚌式开合</button>
     </div>
   </div>
 
   <!-- 核心交互区 -->
   <div class="workspace">
     <div>
-      <!-- 画布专属快捷动作切换条 (置顶紧贴画布，触手可及) -->
-      <div class="quick-switcher-bar">
-        <div class="quick-switcher-header">
-          <div class="quick-switcher-title">🎯 当前动作切换（点击直接换动作）：</div>
-          <div class="quick-switcher-hint">支持左右按键连续轮播</div>
-        </div>
-        <div class="quick-switcher-btns">
-          <button type="button" class="quick-btn" id="quick_prone" onclick="selectEx('prone', false)" data-ex="prone">俯卧伸展</button>
-          <button type="button" class="quick-btn" id="quick_standing" onclick="selectEx('standing', false)" data-ex="standing">站立后伸</button>
-          <button type="button" class="quick-btn active" id="quick_deadbug" onclick="selectEx('deadbug', false)" data-ex="deadbug">死虫式</button>
-          <button type="button" class="quick-btn" id="quick_birddog" onclick="selectEx('birddog', false)" data-ex="birddog">鸟狗式</button>
-          <button type="button" class="quick-btn" id="quick_bridge" onclick="selectEx('bridge', false)" data-ex="bridge">臀桥</button>
-          <button type="button" class="quick-btn" id="quick_clamshell" onclick="selectEx('clamshell', false)" data-ex="clamshell">蚌式开合</button>
-        </div>
-      </div>
-
       <div class="canvas-wrapper">
         <canvas id="motionCanvas" width="800" height="450"></canvas>
       </div>
+
       <div class="ctrl-bar">
-        <div class="ctrl-bar-row1" style="width:100%;">
-          <input type="range" class="slider" id="progressSlider" min="0" max="1" step="0.01" value="0" oninput="manualSeek(this.value)" style="width:100%;">
-        </div>
-        <div class="ctrl-bar-row2" style="width:100%; display:flex; gap:8px;">
-          <button type="button" class="ctrl-btn" onclick="prevEx()" style="flex:1;">⏮ 上一动作</button>
-          <button type="button" class="ctrl-btn" id="playBtn" onclick="togglePlay()" style="flex:1.2; font-weight:700;">⏸ 暂停</button>
-          <button type="button" class="ctrl-btn" onclick="nextEx()" style="flex:1;">下一动作 ⏭</button>
-        </div>
-        <div class="ctrl-bar-subrow" style="width:100%; display:flex; gap:8px; margin-top:6px;">
-          <button type="button" class="ctrl-btn" id="speedBtn" onclick="toggleSpeed()" style="flex:1;">调速: 1.0x</button>
-          <button type="button" class="ctrl-btn active" id="glowBtn" onclick="toggleGlow()" style="flex:1.2;">🔥 肌群高亮: 开</button>
+        <input type="range" class="slider" id="progressSlider" min="0" max="1" step="0.01" value="0" oninput="manualSeek(this.value)">
+        <div class="ctrl-btn-row">
+          <button type="button" class="ctrl-btn" onclick="prevEx()">⏮ 上一个</button>
+          <button type="button" class="ctrl-btn" id="playBtn" onclick="togglePlay()" style="font-weight:700;">⏸ 暂停</button>
+          <button type="button" class="ctrl-btn" onclick="nextEx()">下一个 ⏭</button>
+          <button type="button" class="ctrl-btn" id="speedBtn" onclick="toggleSpeed()">调速: 1.0x</button>
+          <button type="button" class="ctrl-btn active" id="glowBtn" onclick="toggleGlow()">🔥 肌群高亮: 开</button>
         </div>
       </div>
     </div>
 
-    <!-- 右侧临床要领卡 -->
+    <!-- 右侧/下方临床要领卡 -->
     <div class="clinical-card">
       <div class="card-header">
         <h2 id="exName">死虫式 Dead Bug</h2>
@@ -439,7 +370,6 @@
     </div>
   </div>
 </div>
-
 <script>
 // CanvasRenderingContext2D.prototype.roundRect Polyfill (WeChat / Older Mobile WebViews)
 if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D.prototype.roundRect) {
@@ -538,24 +468,47 @@ function nextEx() {
   selectEx(EX_ORDER[idx], false);
 }
 
-function selectEx(key, scroll=false) {
+
+const GROUP_DESCS = {
+  boxGroupA: '久坐、弯腰系鞋带或搬东西瞬间刺痛，但躺平或双手叉腰往后仰身腰痛立马减轻。',
+  boxGroupB: '早晨刷牙微弯腰突然脱力像要闪腰；久坐起身瞬间直不起腰，必须双手撑膝盖借力。',
+  boxGroupC: '排队逛街站超15分钟后腰酸紧想捶腰；走路左右晃腰；肚子前凸后腰死命凹（假翘臀）。'
+};
+
+const GROUP_DEFAULT_EX = {
+  boxGroupA: 'prone',
+  boxGroupB: 'deadbug',
+  boxGroupC: 'bridge'
+};
+
+function switchGroup(groupId) {
+  ['boxGroupA', 'boxGroupB', 'boxGroupC'].forEach(g => {
+    const tab = document.getElementById('tab_' + g);
+    if (tab) tab.classList.toggle('active', g === groupId);
+  });
+  const descEl = document.getElementById('groupDescText');
+  if (descEl && GROUP_DESCS[groupId]) descEl.innerText = GROUP_DESCS[groupId];
+  selectEx(GROUP_DEFAULT_EX[groupId]);
+}
+
+function selectEx(key) {
   if (!DB[key]) return;
   currentEx = key;
   const d = DB[key];
 
-  // 1. 同步顶部适应症分类下的动作按钮
+  // 1. 同步顶部6个动作按钮高亮
   ['prone', 'standing', 'deadbug', 'birddog', 'bridge', 'clamshell'].forEach(k => {
     const btn = document.getElementById('btn_' + k);
     if (btn) btn.classList.toggle('active', k === key);
-    const qbtn = document.getElementById('quick_' + k);
-    if (qbtn) qbtn.classList.toggle('active', k === key);
   });
 
-  // 2. 同步三大分型外框高亮
+  // 2. 同步顶部3个分型标签与描述
   ['boxGroupA', 'boxGroupB', 'boxGroupC'].forEach(g => {
-    const el = document.getElementById(g);
-    if (el) el.classList.toggle('active', g === d.group);
+    const tab = document.getElementById('tab_' + g);
+    if (tab) tab.classList.toggle('active', g === d.group);
   });
+  const descEl = document.getElementById('groupDescText');
+  if (descEl && GROUP_DESCS[d.group]) descEl.innerText = GROUP_DESCS[d.group];
 
   // 3. 刷新右侧要领卡内容
   const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
@@ -566,14 +519,6 @@ function selectEx(key, scroll=false) {
   setEl('exTarget', d.target);
   setEl('exCues', d.cues);
   setEl('exWarning', d.warning);
-
-  // 4. 如果是在手机端点击顶部卡片，平滑滑动画布至屏幕正中央
-  if (scroll && window.innerWidth <= 960) {
-    const canvasWrap = document.querySelector('.canvas-wrapper');
-    if (canvasWrap) {
-      canvasWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }
 }
 
 function togglePlay() {
